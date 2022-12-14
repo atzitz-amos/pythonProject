@@ -45,6 +45,87 @@ class Monomial:
         self.power = new.power
         return self
 
+    def __truediv__(self, other):
+        new_coefficient, new_power = self.coefficient, self.power
+        if type(other) == int:
+            new_coefficient = other / self.coefficient
+        elif type(other) == Monomial:
+            if other.name == self.name:
+                new_coefficient = self.coefficient / other.coefficient
+                new_power = self.power - other.power
+            else:
+                return Polynomial.from_monomials(self, other)
+        else:
+            raise ValueError("Can only multiply Monomial by int or Monomial, not by  " +str(type(other)))
+        return Monomial(self.name, new_coefficient, new_power)
+
+    def __rtruediv__(self, other):
+        if type(other) == Monomial:
+            return self
+        return self.__truediv__(other)
+
+    def __itruediv__(self, other):
+        new = self.__truediv__(other)
+        if type(new) == Polynomial:
+            raise TypeError("Unsupported operand type /= for different monomials.'")
+        self.coefficient = new.coefficient
+        self.power = new.power
+        return self
+
+    def __mul__(self, other):
+        new_coefficient, new_power = self.coefficient, self.power
+        if type(other) == int:
+            new_coefficient = other * self.coefficient
+        elif type(other) == Monomial:
+            if other.name == self.name:
+                new_coefficient = self.coefficient * other.coefficient
+                new_power = self.power + other.power
+            else:
+                return Polynomial.from_monomials(self, other)
+        else:
+            raise ValueError("Can only multiply Monomial by int or Monomial, not by  " +str(type(other)))
+        return Monomial(self.name, new_coefficient, new_power)
+
+    def __rmul__(self, other):
+        if type(other) == Monomial:
+            return self
+        return self.__mul__(other)
+
+    def __imul__(self, other):
+        new = self.__mul__(other)
+        if type(new) == Polynomial:
+            raise TypeError("Unsupported operand type *= for different monomials.'")
+        self.coefficient = new.coefficient
+        self.power = new.power
+        return self
+
+    def __mul__(self, other):
+        new_coefficient, new_power = self.coefficient, self.power
+        if type(other) == int:
+            new_coefficient = other * self.coefficient
+        elif type(other) == Monomial:
+            if other.name == self.name:
+                new_coefficient = self.coefficient * other.coefficient
+                new_power = self.power + other.power
+            else:
+                return Polynomial.from_monomials(self, other)
+        else:
+            raise ValueError("Can only multiply Monomial by int or Monomial, not by  " +str(type(other)))
+        return Monomial(self.name, new_coefficient, new_power)
+
+    def __rmul__(self, other):
+        if type(other) == Monomial:
+            return self
+        return self.__mul__(other)
+
+    def __imul__(self, other):
+        new = self.__mul__(other)
+        if type(new) == Polynomial:
+            raise TypeError("Unsupported operand type *= for different monomials.'")
+        self.coefficient = new.coefficient
+        self.power = new.power
+        return self
+
     def __str__(self):
         if self.coefficient == 0:
             return "0"
